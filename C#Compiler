@@ -1,0 +1,160 @@
+using System;
+class Program
+	{
+		static void Main(string[] args)
+		{
+			string neym = "REN";
+			int nam = 67;
+			double pie = 3.14;
+			bool yes = 10 > 15;
+			Console.WriteLine(neym);
+			Console.WriteLine(nam);
+			Console.WriteLine(pie);
+			Console.WriteLine(yes);
+		}
+	}
+
+using System;
+class Program
+	{
+		static void Main(string[] args)
+		{
+			string streng = "Jade";
+			int ent = 23;
+			double dobol = 3.14;
+			bool bul = 10 > 15;
+			char charmander = 'A';
+			Console.WriteLine("Hi, my name is " + streng + ", I am " + ent + " years old. I bought a apple for a price of " + dobol + " per kilo. The name of store is " + charmander + " and is it " + bul + "for selling a high value fruits");
+		}
+	}
+
+using System;
+
+namespace Jade
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+		Console.Write("What is your name? ");
+		string name = Console.ReadLine();
+		Console.Write("How old are you? ");
+		int age = Convert.ToInt32(Console.ReadLine());
+		Console.Write("How much money do you have? ");
+		double price = double.Parse(Console.ReadLine());
+		Console.Write("What letter grade did you get? ");
+		char grade = Convert.ToChar(Console.ReadLine());
+		Console.Write("Are you a student? true or false ");
+		bool isStudent = bool.Parse(Console.ReadLine());
+      	Console.WriteLine("My name is " + name + ", I am " + age + " years old, I have $" + price + " in my pocket, I got a " + grade + " in school, and it is " + isStudent + " that I am currently a student.");
+    }
+  }
+}
+
+
+using System;
+using System.Collections.Generic;
+
+namespace StarShape
+{
+    class Program
+    {
+        const int GridWidth = 61;
+        const int GridHeight = 31;
+
+        static void Main(string[] args)
+        {
+            char[,] grid = new char[GridHeight, GridWidth];
+            for (int r = 0; r < GridHeight; r++)
+            {
+                for (int c = 0; c < GridWidth; c++)
+                {
+                    grid[r, c] = ' ';
+                }
+            }
+
+            double centerX = GridWidth / 2.0;
+            double centerY = GridHeight / 2.0;
+            double outerRadius = (GridHeight / 2.0) - 1;
+            double innerRadius = outerRadius * 0.4;
+
+            List<(double x, double y)> starVertices = GetStarVertices(centerX, centerY, outerRadius, innerRadius, 5);
+
+            for (int i = 0; i < starVertices.Count; i++)
+            {
+                var start = starVertices[i];
+                var end = starVertices[(i + 1) % starVertices.Count];
+                DrawLine(grid, start, end);
+            }
+
+            PrintGrid(grid);
+        }
+
+        static List<(double x, double y)> GetStarVertices(double cx, double cy, double OuterRadius, double innerRadius, int points)
+        {
+            var vertices = new List<(double x, double y)>();
+            int totalPoints = points * 2;
+            double angleStep = Math.PI / points;
+            double startAngle = -Math.PI / 2;
+
+            for (int i = 0; i < totalPoints; i++)
+            {
+                double angle = startAngle + (i * angleStep);
+                double radius = (i % 2 == 0) ? OuterRadius : innerRadius;
+                double x = cx + (Math.Cos(angle) * radius * 2);
+                double y = cy + (Math.Sin(angle) * radius);
+                vertices.Add((x, y));
+            }
+
+            return vertices;
+        }
+
+        static void DrawLine(char[,] grid, (double x, double y) start, (double x, double y) end)
+        {
+            int x0 = (int)Math.Round(start.x);
+            int y0 = (int)Math.Round(start.y);
+            int x1 = (int)Math.Round(end.x);
+            int y1 = (int)Math.Round(end.y);
+
+            int dx = Math.Abs(x1 - x0);
+            int dy = Math.Abs(y1 - y0);
+            int sx = x0 < x1 ? 1 : -1;
+            int sy = y0 < y1 ? 1 : -1;
+            int err = dx - dy;
+
+            while (true)
+            {
+                if (x0 >= 0 && x0 < GridWidth && y0 >= 0 && y0 < GridHeight)
+                {
+                    grid[y0, x0] = '*';
+                }
+
+                if (x0 == x1 && y0 == y1) break;
+
+                int e2 = 2 * err;
+                if (e2 > -dy)
+                {
+                    err -= dy;
+                    x0 += sx;
+                }
+                if (e2 < dx)
+                {
+                    err += dx;
+                    y0 += sy;
+                }
+            }
+        }
+
+        static void PrintGrid(char[,] grid)
+        {
+            for (int r = 0; r < GridHeight; r++)
+            {
+                for (int c = 0; c < GridWidth; c++)
+                {
+                    Console.Write(grid[r, c]);
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
